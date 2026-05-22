@@ -121,6 +121,7 @@
   <div class="footer-credit">Images © USGS / NASA Landsat</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
 <script>
   let msgFilter = 'all';
@@ -148,9 +149,9 @@
     renderMessages();
   }
 
-  function renderMessages() {
+  async function renderMessages() {
     const list = document.getElementById('messages-list');
-    let msgs = getMessages();
+    let msgs = await getMessages();
     if (msgFilter !== 'all') msgs = msgs.filter(m => m.group === msgFilter);
 
     const count = msgs.length;
@@ -178,7 +179,7 @@
     `).join('');
   }
 
-  function submitMessage() {
+  async function submitMessage() {
     const name = document.getElementById('f-name').value.trim();
     const city = document.getElementById('f-city').value.trim();
     const group = document.getElementById('f-group').value;
@@ -193,7 +194,7 @@
     document.getElementById('f-name').style.borderColor = '';
     document.getElementById('f-text').style.borderColor = '';
 
-    saveMessage({ name, city, group, text });
+    await saveMessage({ name, city, group, text });
 
     document.getElementById('f-name').value = '';
     document.getElementById('f-city').value = '';
@@ -211,10 +212,10 @@
     updateBotTicker();
   }
 
-  function updateBotTicker() {
+  async function updateBotTicker() {
     const el = document.getElementById('ticker-bot');
     if (!el) return;
-    const msgs = getMessages().slice(0, 5);
+    const msgs = (await getMessages()).slice(0, 5);
     if (msgs.length === 0) return;
     const parts = msgs.map(m => `<span>${getGroupIcon(m.group)} ${m.name}${m.city ? ', ' + m.city : ''} : « ${m.text.slice(0, 40)}… »</span><span class="heart-red">♥</span>`).join('');
     el.innerHTML = parts + parts;

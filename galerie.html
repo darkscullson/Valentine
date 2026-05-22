@@ -123,6 +123,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
 <script>
   let currentFilter = 'all';
@@ -150,9 +151,9 @@
     renderGallery();
   }
 
-  function renderGallery() {
+  async function renderGallery() {
     const root = document.getElementById('gallery-root');
-    let imgs = getImages();
+    let imgs = await getImages();
 
     // Always show the hero Landsat image in the Landsat group
     const landsatBuiltin = {
@@ -208,7 +209,7 @@
     `).join('');
 
     // Update count
-    const total = getImages().length;
+    const total = imgs.length;
     document.getElementById('upload-count').textContent = `${total} photo${total > 1 ? 's' : ''} ajoutée${total > 1 ? 's' : ''}`;
   }
 
@@ -241,10 +242,14 @@
     window._pendingDataUrl = null;
   }
 
-  function confirmUpload() {
+  async function confirmUpload() {
     const title = document.getElementById('meta-title').value.trim() || 'Photo';
     const group = document.getElementById('meta-group').value;
-    saveImage({ src: window._pendingDataUrl, title, group });
+    await saveImage(
+      pendingFiles[pendingIndex],
+      title,
+      group
+    );
     closeMetaModal();
     pendingIndex++;
     if (pendingIndex < pendingFiles.length) {
