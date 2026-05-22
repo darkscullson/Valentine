@@ -131,9 +131,9 @@
   let pendingIndex = 0;
 
   // Build group filter buttons
-  function buildFilters() {
+  async function buildFilters() {
     const container = document.getElementById('group-filters');
-    const imgs = getImages();
+    const imgs = await getImages();
     const usedGroups = [...new Set(imgs.map(i => i.group))];
     // Show all groups + only used ones
     const toShow = GROUPS.filter(g => usedGroups.includes(g.id));
@@ -255,13 +255,15 @@
     if (pendingIndex < pendingFiles.length) {
       setTimeout(() => showMetaModal(pendingFiles[pendingIndex]), 200);
     } else {
-      buildFilters();
-      renderGallery();
+      await buildFilters();
+      await renderGallery();
     }
   }
 
-  buildFilters();
-  renderGallery();
+  (async () => {
+    await buildFilters();
+    await renderGallery();
+  })();
 </script>
 </body>
 </html>

@@ -131,8 +131,8 @@
     sel.innerHTML = GROUPS.map(g => `<option value="${g.id}">${g.icon} ${g.label}</option>`).join('');
   }
 
-  function buildMsgFilters() {
-    const msgs = getMessages();
+  async function buildMsgFilters() {
+    const msgs = await getMessages();
     const usedGroups = [...new Set(msgs.map(m => m.group))];
     const toShow = GROUPS.filter(g => usedGroups.includes(g.id));
     document.getElementById('msg-group-filters').innerHTML = toShow.map(g => `
@@ -146,7 +146,7 @@
     msgFilter = gid;
     document.querySelectorAll('.msg-filter-bar .btn').forEach(b => b.classList.remove('active-filter'));
     btn.classList.add('active-filter');
-    renderMessages();
+    await renderMessages();
   }
 
   async function renderMessages() {
@@ -204,12 +204,12 @@
     suc.style.display = 'block';
     setTimeout(() => suc.style.display = 'none', 3000);
 
-    buildMsgFilters();
-    renderMessages();
-    updateTopTicker();
+    await buildMsgFilters();
+    await renderMessages();
+    await updateTopTicker();
 
     // Update bottom ticker too
-    updateBotTicker();
+    await updateBotTicker();
   }
 
   async function updateBotTicker() {
@@ -221,10 +221,12 @@
     el.innerHTML = parts + parts;
   }
 
-  buildGroupSelect();
-  buildMsgFilters();
-  renderMessages();
-  updateBotTicker();
+  (async () => {
+    buildGroupSelect();
+    await buildMsgFilters();
+    await renderMessages();
+    await updateBotTicker();
+  })();
 </script>
 </body>
 </html>

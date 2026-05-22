@@ -6,7 +6,7 @@ const SUPABASE_URL = "https://ospciieqvkopxzeilrnc.supabase.co";
 
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zcGNpaWVxdmtvcHh6ZWlscm5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NDU4ODQsImV4cCI6MjA5NTAyMTg4NH0.7_YTNPyvINLlxK9KwxXzg6DsRjMIt93evfkU56iU8VA";
 
-const supabase = window.supabase.createClient(
+const sb = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
@@ -35,7 +35,7 @@ function getGroupIcon(id) {
 
 // ---- MESSAGES ----
 async function getMessages() {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('messages')
     .select('*')
     .order('created_at', { ascending: false });
@@ -56,7 +56,7 @@ async function getMessages() {
 }
 
 async function saveMessage(msg) {
-  const { error } = await supabase
+  const { error } = await sb
     .from('messages')
     .insert({
       name: msg.name,
@@ -70,7 +70,7 @@ async function saveMessage(msg) {
 
 // ---- PHOTOS ----
 async function getImages() {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from('photos')
     .select('*')
     .order('created_at', { ascending: false });
@@ -94,7 +94,7 @@ async function saveImage(file, title, group) {
   const fileName =
     Date.now() + "_" + file.name.replace(/\s/g, "_");
 
-  const { error: uploadError } = await supabase
+  const { error: uploadError } = await sb
     .storage
     .from('photos')
     .upload(fileName, file);
@@ -104,12 +104,12 @@ async function saveImage(file, title, group) {
     return;
   }
 
-  const { data } = supabase
+  const { data } = sb
     .storage
     .from('photos')
     .getPublicUrl(fileName);
 
-  await supabase
+  await sb
     .from('photos')
     .insert({
       title,

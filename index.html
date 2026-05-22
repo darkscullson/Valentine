@@ -124,7 +124,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
 <script>
-  renderMsgPeek('msg-peek', 3); updateTopTicker();
+  (async () => {
+    await renderMsgPeek('msg-peek', 3);
+    await updateTopTicker();
+  })();
 </script>
 </body>
 </html>
