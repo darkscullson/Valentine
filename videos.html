@@ -131,7 +131,7 @@ async function renderVideos() {
 
     return `
       <div class="video-card fade-in"
-           onclick='openVideoModal(${JSON.stringify("${v.title}")})'>
+           onclick='openVideoModal(${JSON.stringify(v).replace(/'/g, "&apos;")})'>
 
         <div class="video-thumb">
           <img src="${thumb}">
