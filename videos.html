@@ -4,44 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vidéos — Valentine</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <nav class="nav">
   <div class="nav-logo" onclick="window.location='index.html'">V A L E N T I N E</div>
+
   <div class="nav-links">
     <a href="index.html" class="nav-link">Accueil</a>
     <a href="galerie.html" class="nav-link">Galerie</a>
     <a href="videos.html" class="nav-link active">Vidéos</a>
     <a href="messages.html" class="nav-link">Messages</a>
   </div>
-  <div class="nav-burger" onclick="toggleMenu()"><i class="fa fa-bars"></i></div>
-</nav>
-<div class="nav-mobile" id="nav-mobile">
-  <a href="index.html">Accueil</a>
-  <a href="galerie.html">Galerie</a>
-  <a href="videos.html">Vidéos</a>
-  <a href="messages.html">Messages</a>
-</div>
 
-<div class="ticker-wrap top-ticker">
-  <div class="ticker-track" id="ticker-top">
-    <span>🎬 Vidéos de Valentine</span><span class="sep">◦</span>
-    <span>Moments capturés pour toi</span><span class="sep">◦</span>
-    <span class="heart-red">♥</span>
-    <span>Ajoute un lien YouTube ou une vidéo</span><span class="sep">◦</span>
-    <span>Rochefort · Poitiers · Famille</span><span class="sep">◦</span>
-    <span>🎬 Vidéos de Valentine</span><span class="sep">◦</span>
-    <span>Moments capturés pour toi</span><span class="sep">◦</span>
-    <span class="heart-red">♥</span>
-    <span>Ajoute un lien YouTube ou une vidéo</span><span class="sep">◦</span>
-    <span>Rochefort · Poitiers · Famille</span><span class="sep">◦</span>
+  <div class="nav-burger" onclick="toggleMenu()">
+    <i class="fa fa-bars"></i>
   </div>
-</div>
+</nav>
 
 <div class="page-header">
   <h1>Vidéos <em>& moments</em></h1>
@@ -49,171 +34,176 @@
 </div>
 
 <div class="filter-bar">
-  <span class="filter-label">Filtrer :</span>
-  <button class="btn active-filter" onclick="filterVideos('all', this)">Tous</button>
-  <div id="group-filters"></div>
   <button class="btn primary" style="margin-left:auto;" onclick="toggleAddForm()">
     <i class="fa fa-plus"></i> Ajouter une vidéo
   </button>
 </div>
 
-<!-- ADD VIDEO FORM -->
 <div class="videos-container">
+
   <div class="video-add-form" id="add-form">
-    <div style="font-size:1.1rem;font-style:italic;margin-bottom:1rem;">Ajouter une vidéo</div>
+
     <div class="form-row">
       <div class="form-field">
         <label>Titre</label>
-        <input type="text" id="v-title" placeholder="Ex: Soirée Rochefort été 2024">
+        <input type="text" id="v-title">
       </div>
+
       <div class="form-field">
         <label>Groupe</label>
-        <select id="v-group">
-          <!-- filled by JS -->
-        </select>
+        <select id="v-group"></select>
       </div>
     </div>
+
     <div class="form-field form-full" style="margin-bottom:10px;">
-      <label>Lien YouTube (optionnel)</label>
-      <input type="text" id="v-url" placeholder="https://www.youtube.com/watch?v=...">
+      <label>Lien YouTube</label>
+      <input type="text" id="v-url">
     </div>
+
     <div class="form-actions">
       <button class="btn" onclick="toggleAddForm()">Annuler</button>
-      <button class="btn primary" onclick="addVideo()" style="margin-left:8px">
-        <i class="fa fa-check"></i> Ajouter
+
+      <button class="btn primary" onclick="addVideo()">
+        Ajouter
       </button>
     </div>
+
   </div>
 
   <div id="videos-root"></div>
+
 </div>
 
-<!-- VIDEO MODAL -->
 <div class="video-modal" id="video-modal" onclick="closeVideoModal()">
   <div class="video-modal-inner" onclick="event.stopPropagation()">
+
     <div class="video-modal-header">
       <div class="video-modal-title"></div>
-      <div class="modal-close" onclick="closeVideoModal()"><i class="fa fa-times"></i></div>
+
+      <div class="modal-close" onclick="closeVideoModal()">
+        <i class="fa fa-times"></i>
+      </div>
     </div>
+
     <div class="video-embed"></div>
+
   </div>
 </div>
-
-<div class="ticker-wrap bot-ticker">
-  <div class="ticker-track reverse">
-    <span>Chaque seconde compte</span><span class="sep">◦</span>
-    <span class="heart-red">♥</span>
-    <span>Pour Valentine avec amour</span><span class="sep">◦</span>
-    <span>YouTube · MP4 · Souvenirs</span><span class="sep">◦</span>
-    <span>Chaque seconde compte</span><span class="sep">◦</span>
-    <span class="heart-red">♥</span>
-    <span>Pour Valentine avec amour</span><span class="sep">◦</span>
-    <span>YouTube · MP4 · Souvenirs</span><span class="sep">◦</span>
-  </div>
-</div>
-
-<footer class="footer">
-  <div class="footer-name">V A L E N T I N E</div>
-  <div class="footer-sub">Un cadeau fait avec ❤ et quelques satellites</div>
-  <div class="footer-credit">Images © USGS / NASA Landsat</div>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="app.js"></script>
+
 <script>
-  let vidFilter = 'all';
 
-  async function buildFilters() {
-    const container = document.getElementById('group-filters');
-    const vids = await getVideos();
-    const usedGroups = [...new Set(vids.map(v => v.group))];
-    const toShow = GROUPS.filter(g => usedGroups.includes(g.id));
-    container.innerHTML = toShow.map(g => `
-      <button class="btn" id="btn-${g.id}" onclick="filterVideos('${g.id}', this)">
-        ${g.icon} ${g.label}
-      </button>
-    `).join('');
-    // Fill add form select
-    const sel = document.getElementById('v-group');
-    if (sel) sel.innerHTML = GROUPS.map(g => `<option value="${g.id}">${g.icon} ${g.label}</option>`).join('');
-  }
+let vidFilter = 'all';
 
-  function filterVideos(gid, btn) {
-    vidFilter = gid;
-    document.querySelectorAll('.filter-bar .btn').forEach(b => b.classList.remove('active-filter'));
-    btn.classList.add('active-filter');
-    await renderVideos();
-  }
+async function buildFilters() {
 
-  async function renderVideos() {
-    const root = document.getElementById('videos-root');
-    let vids = await getVideos();
-    if (vidFilter !== 'all') vids = vids.filter(v => v.group === vidFilter);
+  const sel = document.getElementById('v-group');
 
-    if (vids.length === 0) {
-      root.innerHTML = '<div class="empty-state">Aucune vidéo pour l\'instant.<br><em>Ajoute-en une avec le bouton ci-dessus !</em></div>';
-      return;
-    }
+  sel.innerHTML = GROUPS.map(g => `
+    <option value="${g.id}">
+      ${g.icon} ${g.label}
+    </option>
+  `).join('');
+}
 
-    // Group by group
-    const groups = {};
-    vids.forEach(v => {
-      if (!groups[v.group]) groups[v.group] = [];
-      groups[v.group].push(v);
-    });
+async function renderVideos() {
 
-    root.innerHTML = Object.entries(groups).map(([gid, items]) => `
-      <div>
-        <div class="video-section-title">${getGroupIcon(gid)} ${getGroupLabel(gid)} — ${items.length} vidéo${items.length > 1 ? 's' : ''}</div>
-        <div class="video-grid">
-          ${items.map(v => {
-            const thumb = v.url ? getYtThumb(v.url) : '';
-            const thumbHtml = thumb
-              ? `<img src="${thumb}" alt="${v.title}">`
-              : `<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(255,255,255,0.15);font-size:2rem;"><i class="fa fa-film"></i></div>`;
-            return `
-              <div class="video-card fade-in" onclick="openVideoModal(${JSON.stringify(v).replace(/"/g, '&quot;')})">
-                <div class="video-thumb">
-                  ${thumbHtml}
-                  <div class="video-play-btn"><i class="fa fa-play"></i></div>
-                </div>
-                <div class="video-info">
-                  <div class="video-title">${v.title}</div>
-                  <div class="video-meta">
-                    <span class="video-tag">${getGroupIcon(v.group)} ${getGroupLabel(v.group)}</span>
-                    <span>${v.date}</span>
-                    ${v.url ? '<span class="video-tag">YouTube</span>' : '<span class="video-tag">À uploader</span>'}
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
+  const root = document.getElementById('videos-root');
+
+  let vids = await getVideos();
+
+  if (vids.length === 0) {
+
+    root.innerHTML = `
+      <div class="empty-state">
+        Aucune vidéo pour l'instant.
       </div>
-    `).join('');
+    `;
+
+    return;
   }
 
-  function toggleAddForm() {
-    document.getElementById('add-form').classList.toggle('open');
-  }
+  root.innerHTML = vids.map(v => {
 
-  async function addVideo() {
-    const title = document.getElementById('v-title').value.trim();
-    const group = document.getElementById('v-group').value;
-    const url = document.getElementById('v-url').value.trim();
-    if (!title) { document.getElementById('v-title').focus(); return; }
-    await saveVideo({ title, group, url, type: url ? 'youtube' : 'upload' });
-    document.getElementById('v-title').value = '';
-    document.getElementById('v-url').value = '';
-    toggleAddForm();
-    await buildFilters();
-    await renderVideos();
-  }
+    const thumb = getYtThumb(v.url);
 
-  (async () => {
-    await buildFilters();
-    await renderVideos();
-  })();
+    return `
+      <div class="video-card fade-in"
+           onclick='openVideoModal(${JSON.stringify("${v.title}")})'>
+
+        <div class="video-thumb">
+          <img src="${thumb}">
+          <div class="video-play-btn">
+            <i class="fa fa-play"></i>
+          </div>
+        </div>
+
+        <div class="video-info">
+
+          <div class="video-title">
+            ${v.title}
+          </div>
+
+          <div class="video-meta">
+            <span class="video-tag">
+              ${getGroupIcon(v.group)}
+              ${getGroupLabel(v.group)}
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+  }).join('');
+}
+
+function toggleAddForm() {
+
+  document
+    .getElementById('add-form')
+    .classList
+    .toggle('open');
+}
+
+async function addVideo() {
+
+  const title =
+    document.getElementById('v-title').value.trim();
+
+  const group =
+    document.getElementById('v-group').value;
+
+  const url =
+    document.getElementById('v-url').value.trim();
+
+  if (!title || !url) return;
+
+  await saveVideo({
+    title,
+    group,
+    url
+  });
+
+  document.getElementById('v-title').value = '';
+  document.getElementById('v-url').value = '';
+
+  toggleAddForm();
+
+  await renderVideos();
+}
+
+(async () => {
+
+  await buildFilters();
+  await renderVideos();
+
+})();
+
 </script>
+
 </body>
 </html>
