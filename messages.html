@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages — Valentine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo" onclick="window.location='index.html'">V A L E N T I N E</div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="galerie.html" class="nav-link">Galerie</a>
+    <a href="videos.html" class="nav-link">Vidéos</a>
+    <a href="messages.html" class="nav-link active">Messages</a>
+  </div>
+  <div class="nav-burger" onclick="toggleMenu()"><i class="fa fa-bars"></i></div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Accueil</a>
+  <a href="galerie.html">Galerie</a>
+  <a href="videos.html">Vidéos</a>
+  <a href="messages.html">Messages</a>
+</div>
+
+<!-- TICKER TOP (live messages) -->
+<div class="ticker-wrap top-ticker">
+  <div class="ticker-track" id="ticker-top">
+    <span>❤ Messages pour Valentine</span><span class="sep">◦</span>
+    <span>Laisse ton mot ici</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Chaque mot compte</span><span class="sep">◦</span>
+    <span>❤ Messages pour Valentine</span><span class="sep">◦</span>
+    <span>Laisse ton mot ici</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Chaque mot compte</span><span class="sep">◦</span>
+  </div>
+</div>
+
+<div class="page-header">
+  <h1>Messages <em>& mots doux</em></h1>
+  <p class="page-desc">Tous les mots laissés pour toi, depuis partout</p>
+</div>
+
+<div class="messages-container">
+
+  <!-- FORM -->
+  <div class="msg-form-box">
+    <div class="form-title-text">Laisse un message à Valentine</div>
+    <div class="form-sub-text">Il apparaîtra ici et dans le bandeau défilant</div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label>Ton prénom *</label>
+        <input type="text" id="f-name" placeholder="Marie">
+      </div>
+      <div class="form-field">
+        <label>Ta ville</label>
+        <input type="text" id="f-city" placeholder="Rochefort">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field form-full">
+        <label>Ton groupe</label>
+        <select id="f-group"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field form-full">
+        <label>Ton message *</label>
+        <textarea id="f-text" placeholder="Écris ton message pour Valentine..."></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="submitMessage()">
+        <i class="fa fa-paper-plane"></i> Envoyer
+      </button>
+    </div>
+    <div class="success-msg" id="success-msg">✓ Merci ! Ton message a été ajouté.</div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="msg-filter-bar">
+    <span class="filter-label">Filtrer :</span>
+    <button class="btn active-filter" onclick="filterMsgs('all', this)">Tous</button>
+    <div id="msg-group-filters"></div>
+  </div>
+
+  <!-- COUNT -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <span id="msg-count" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;">
+      <span class="dot-live"></span> Messages en direct
+    </span>
+  </div>
+
+  <!-- MESSAGES LIST -->
+  <div class="messages-list" id="messages-list"></div>
+
+</div>
+
+<!-- TICKER BOTTOM (live messages) -->
+<div class="ticker-wrap bot-ticker">
+  <div class="ticker-track reverse" id="ticker-bot">
+    <span>Pour Valentine avec amour</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Rochefort · Poitiers · Famille · Fac</span><span class="sep">◦</span>
+    <span>Pour Valentine avec amour</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Rochefort · Poitiers · Famille · Fac</span><span class="sep">◦</span>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-name">V A L E N T I N E</div>
+  <div class="footer-sub">Un cadeau fait avec ❤ et quelques satellites</div>
+  <div class="footer-credit">Images © USGS / NASA Landsat</div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  let msgFilter = 'all';
+
+  function buildGroupSelect() {
+    const sel = document.getElementById('f-group');
+    sel.innerHTML = GROUPS.map(g => `<option value="${g.id}">${g.icon} ${g.label}</option>`).join('');
+  }
+
+  function buildMsgFilters() {
+    const msgs = getMessages();
+    const usedGroups = [...new Set(msgs.map(m => m.group))];
+    const toShow = GROUPS.filter(g => usedGroups.includes(g.id));
+    document.getElementById('msg-group-filters').innerHTML = toShow.map(g => `
+      <button class="btn" id="mfbtn-${g.id}" onclick="filterMsgs('${g.id}', this)">
+        ${g.icon} ${g.label}
+      </button>
+    `).join('');
+  }
+
+  function filterMsgs(gid, btn) {
+    msgFilter = gid;
+    document.querySelectorAll('.msg-filter-bar .btn').forEach(b => b.classList.remove('active-filter'));
+    btn.classList.add('active-filter');
+    renderMessages();
+  }
+
+  function renderMessages() {
+    const list = document.getElementById('messages-list');
+    let msgs = getMessages();
+    if (msgFilter !== 'all') msgs = msgs.filter(m => m.group === msgFilter);
+
+    const count = msgs.length;
+    document.getElementById('msg-count').innerHTML = `<span class="dot-live"></span> ${count} message${count > 1 ? 's' : ''} pour Valentine`;
+
+    if (msgs.length === 0) {
+      list.innerHTML = '<div class="empty-state">Aucun message pour ce groupe.<br><em>Sois le premier !</em></div>';
+      return;
+    }
+
+    list.innerHTML = msgs.map(m => `
+      <div class="msg-item fade-in">
+        <div class="msg-item-header">
+          <div class="msg-author-info">
+            <div class="msg-avatar">${initials(m.name)}</div>
+            <div>
+              <div class="msg-name">${m.name}${m.city ? ' · ' + m.city : ''}</div>
+            </div>
+            <span class="msg-group-badge">${getGroupIcon(m.group)} ${getGroupLabel(m.group)}</span>
+          </div>
+          <div class="msg-date">${m.date}</div>
+        </div>
+        <div class="msg-text">« ${m.text} »</div>
+      </div>
+    `).join('');
+  }
+
+  function submitMessage() {
+    const name = document.getElementById('f-name').value.trim();
+    const city = document.getElementById('f-city').value.trim();
+    const group = document.getElementById('f-group').value;
+    const text = document.getElementById('f-text').value.trim();
+
+    if (!name || !text) {
+      if (!name) document.getElementById('f-name').style.borderColor = 'rgba(200,90,58,0.7)';
+      if (!text) document.getElementById('f-text').style.borderColor = 'rgba(200,90,58,0.7)';
+      return;
+    }
+
+    document.getElementById('f-name').style.borderColor = '';
+    document.getElementById('f-text').style.borderColor = '';
+
+    saveMessage({ name, city, group, text });
+
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-city').value = '';
+    document.getElementById('f-text').value = '';
+
+    const suc = document.getElementById('success-msg');
+    suc.style.display = 'block';
+    setTimeout(() => suc.style.display = 'none', 3000);
+
+    buildMsgFilters();
+    renderMessages();
+    updateTopTicker();
+
+    // Update bottom ticker too
+    updateBotTicker();
+  }
+
+  function updateBotTicker() {
+    const el = document.getElementById('ticker-bot');
+    if (!el) return;
+    const msgs = getMessages().slice(0, 5);
+    if (msgs.length === 0) return;
+    const parts = msgs.map(m => `<span>${getGroupIcon(m.group)} ${m.name}${m.city ? ', ' + m.city : ''} : « ${m.text.slice(0, 40)}… »</span><span class="heart-red">♥</span>`).join('');
+    el.innerHTML = parts + parts;
+  }
+
+  buildGroupSelect();
+  buildMsgFilters();
+  renderMessages();
+  updateBotTicker();
+</script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie — Valentine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo" onclick="window.location='index.html'">V A L E N T I N E</div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="galerie.html" class="nav-link active">Galerie</a>
+    <a href="videos.html" class="nav-link">Vidéos</a>
+    <a href="messages.html" class="nav-link">Messages</a>
+  </div>
+  <div class="nav-burger" onclick="toggleMenu()"><i class="fa fa-bars"></i></div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Accueil</a>
+  <a href="galerie.html">Galerie</a>
+  <a href="videos.html">Vidéos</a>
+  <a href="messages.html">Messages</a>
+</div>
+
+<!-- Tickers -->
+<div class="ticker-wrap top-ticker">
+  <div class="ticker-track" id="ticker-top">
+    <span>📸 Galerie de Valentine</span><span class="sep">◦</span>
+    <span>Rochefort · Poitiers · Famille · Voyages</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Ajoute tes photos</span><span class="sep">◦</span>
+    <span>Landsat · SIG · Géographie</span><span class="sep">◦</span>
+    <span>📸 Galerie de Valentine</span><span class="sep">◦</span>
+    <span>Rochefort · Poitiers · Famille · Voyages</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Ajoute tes photos</span><span class="sep">◦</span>
+    <span>Landsat · SIG · Géographie</span><span class="sep">◦</span>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>Galerie <em>de souvenirs</em></h1>
+  <p class="page-desc">Photos partagées par tous ceux qui t'aiment — triées par groupe</p>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filtrer :</span>
+  <button class="btn active-filter" onclick="filterGallery('all', this)" id="btn-all">Tous</button>
+  <div id="group-filters"></div>
+</div>
+
+<!-- UPLOAD BUTTON -->
+<div style="max-width:1200px;margin:0 auto;padding:0.75rem 1.5rem;display:flex;justify-content:flex-end;align-items:center;gap:10px;">
+  <span id="upload-count" style="font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;"></span>
+  <button class="btn primary" onclick="document.getElementById('file-input').click()">
+    <i class="fa fa-plus"></i> Ajouter des photos
+  </button>
+  <input type="file" id="file-input" multiple accept="image/*" style="display:none" onchange="handleUpload(event)">
+</div>
+
+<!-- GALLERY CONTENT -->
+<div class="gallery-container" id="gallery-root"></div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close" onclick="closeLightbox()"><i class="fa fa-times"></i></div>
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <img src="" alt="" class="lightbox-img">
+    <div class="lightbox-caption"></div>
+  </div>
+</div>
+
+<!-- TICKER BOTTOM -->
+<div class="ticker-wrap bot-ticker">
+  <div class="ticker-track reverse">
+    <span>Glisse tes photos ici</span><span class="sep">◦</span>
+    <span>Landsat 8 OLI • Résolution 30m</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Chaque photo raconte une histoire</span><span class="sep">◦</span>
+    <span>Glisse tes photos ici</span><span class="sep">◦</span>
+    <span>Landsat 8 OLI • Résolution 30m</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Chaque photo raconte une histoire</span><span class="sep">◦</span>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-name">V A L E N T I N E</div>
+  <div class="footer-sub">Un cadeau fait avec ❤ et quelques satellites</div>
+  <div class="footer-credit">Images © USGS / NASA Landsat</div>
+</footer>
+
+<!-- UPLOAD META MODAL -->
+<div class="video-modal" id="meta-modal">
+  <div class="video-modal-inner" style="max-width:480px">
+    <div class="video-modal-header">
+      <div class="video-modal-title">Infos sur cette photo</div>
+      <div class="modal-close" onclick="closeMetaModal()"><i class="fa fa-times"></i></div>
+    </div>
+    <div style="padding:1.5rem;display:flex;flex-direction:column;gap:10px;">
+      <img id="meta-preview" src="" alt="" style="width:100%;border-radius:2px;object-fit:cover;max-height:200px;">
+      <div class="form-field">
+        <label>Titre / Description</label>
+        <input type="text" id="meta-title" placeholder="Ex: Soirée à Rochefort" />
+      </div>
+      <div class="form-field">
+        <label>Groupe</label>
+        <select id="meta-group"></select>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:0.5rem;">
+        <button class="btn" onclick="closeMetaModal()">Annuler</button>
+        <button class="btn primary" onclick="confirmUpload()">Ajouter <i class="fa fa-check"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  let currentFilter = 'all';
+  let pendingFiles = [];
+  let pendingIndex = 0;
+
+  // Build group filter buttons
+  function buildFilters() {
+    const container = document.getElementById('group-filters');
+    const imgs = getImages();
+    const usedGroups = [...new Set(imgs.map(i => i.group))];
+    // Show all groups + only used ones
+    const toShow = GROUPS.filter(g => usedGroups.includes(g.id));
+    container.innerHTML = toShow.map(g => `
+      <button class="btn" id="btn-${g.id}" onclick="filterGallery('${g.id}', this)">
+        ${g.icon} ${g.label}
+      </button>
+    `).join('');
+  }
+
+  function filterGallery(groupId, btn) {
+    currentFilter = groupId;
+    document.querySelectorAll('.filter-bar .btn').forEach(b => b.classList.remove('active-filter'));
+    btn.classList.add('active-filter');
+    renderGallery();
+  }
+
+  function renderGallery() {
+    const root = document.getElementById('gallery-root');
+    let imgs = getImages();
+
+    // Always show the hero Landsat image in the Landsat group
+    const landsatBuiltin = {
+      id: 0,
+      src: 'valentine.png',
+      title: 'Valentine en Landsat',
+      group: 'landsat',
+      date: '2025'
+    };
+
+    imgs = [landsatBuiltin, ...imgs];
+
+    if (currentFilter !== 'all') {
+      imgs = imgs.filter(i => i.group === currentFilter);
+    }
+
+    // Group by group
+    const groups = {};
+    imgs.forEach(img => {
+      if (!groups[img.group]) groups[img.group] = [];
+      groups[img.group].push(img);
+    });
+
+    if (imgs.length === 0) {
+      root.innerHTML = '<div class="empty-state">Aucune photo dans ce groupe.<br><em>Ajoute-en une !</em></div>';
+      return;
+    }
+
+    root.innerHTML = Object.entries(groups).map(([gid, items]) => `
+      <div>
+        <div class="gallery-section-title">
+          ${getGroupIcon(gid)} ${getGroupLabel(gid)}
+          <span class="count">${items.length} photo${items.length > 1 ? 's' : ''}</span>
+        </div>
+        <div class="gallery-grid">
+          ${items.map(img => `
+            <div class="gallery-item fade-in" onclick="openLightbox('${img.src}', '${img.title} · ${getGroupLabel(img.group)}')">
+              <img src="${img.src}" alt="${img.title}" loading="lazy">
+              <div class="gallery-item-overlay">
+                <div class="gallery-item-title">${img.title}</div>
+                <div class="gallery-item-meta">${getGroupIcon(img.group)} ${getGroupLabel(img.group)} · ${img.date}</div>
+              </div>
+            </div>
+          `).join('')}
+          ${currentFilter === 'all' ? '' : `
+            <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+              <i class="fa fa-plus"></i>
+              <span>Ajouter une photo</span>
+            </div>
+          `}
+        </div>
+      </div>
+    `).join('');
+
+    // Update count
+    const total = getImages().length;
+    document.getElementById('upload-count').textContent = `${total} photo${total > 1 ? 's' : ''} ajoutée${total > 1 ? 's' : ''}`;
+  }
+
+  // Upload flow
+  function handleUpload(e) {
+    pendingFiles = Array.from(e.target.files);
+    pendingIndex = 0;
+    if (pendingFiles.length > 0) showMetaModal(pendingFiles[0]);
+    e.target.value = '';
+  }
+
+  function showMetaModal(file) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('meta-preview').src = ev.target.result;
+      window._pendingDataUrl = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    document.getElementById('meta-title').value = file.name.replace(/\.[^.]+$/, '');
+    // Build group select
+    const sel = document.getElementById('meta-group');
+    sel.innerHTML = GROUPS.map(g => `<option value="${g.id}">${g.icon} ${g.label}</option>`).join('');
+    // Pre-select based on current filter
+    if (currentFilter !== 'all') sel.value = currentFilter;
+    document.getElementById('meta-modal').classList.add('open');
+  }
+
+  function closeMetaModal() {
+    document.getElementById('meta-modal').classList.remove('open');
+    window._pendingDataUrl = null;
+  }
+
+  function confirmUpload() {
+    const title = document.getElementById('meta-title').value.trim() || 'Photo';
+    const group = document.getElementById('meta-group').value;
+    saveImage({ src: window._pendingDataUrl, title, group });
+    closeMetaModal();
+    pendingIndex++;
+    if (pendingIndex < pendingFiles.length) {
+      setTimeout(() => showMetaModal(pendingFiles[pendingIndex]), 200);
+    } else {
+      buildFilters();
+      renderGallery();
+    }
+  }
+
+  buildFilters();
+  renderGallery();
+</script>
+</body>
+</html>

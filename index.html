@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine — Un Cadeau Depuis l'Espace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo" onclick="window.location='index.html'">V A L E N T I N E</div>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link active">Accueil</a>
+    <a href="galerie.html" class="nav-link">Galerie</a>
+    <a href="videos.html" class="nav-link">Vidéos</a>
+    <a href="messages.html" class="nav-link">Messages</a>
+  </div>
+  <div class="nav-burger" onclick="toggleMenu()"><i class="fa fa-bars"></i></div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Accueil</a>
+  <a href="galerie.html">Galerie</a>
+  <a href="videos.html">Vidéos</a>
+  <a href="messages.html">Messages</a>
+</div>
+
+<!-- TICKER TOP -->
+<div class="ticker-wrap top-ticker">
+  <div class="ticker-track" id="ticker-top">
+    <span>❤ Pour Valentine</span><span class="sep">◦</span>
+    <span>SIG • Landsat • Géographie</span><span class="sep">◦</span>
+    <span>Un cadeau depuis l'espace</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Nos messages pour toi</span><span class="sep">◦</span>
+    <span>Rochefort • Poitiers • Et bien d'autres</span><span class="sep">◦</span>
+    <span>❤ Pour Valentine</span><span class="sep">◦</span>
+    <span>SIG • Landsat • Géographie</span><span class="sep">◦</span>
+    <span>Un cadeau depuis l'espace</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Nos messages pour toi</span><span class="sep">◦</span>
+    <span>Rochefort • Poitiers • Et bien d'autres</span><span class="sep">◦</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Satellite Landsat &nbsp;·&nbsp; 2025 &nbsp;·&nbsp; Un cadeau orbital</div>
+  <div class="hero-img-wrap">
+    <img src="valentine.png" alt="Valentine écrite en images Landsat" class="hero-img">
+    <div class="hero-overlay">
+      <div class="hero-coords">48°N 2°E</div>
+    </div>
+  </div>
+  <h1 class="hero-title">Son prénom,<br><em>écrit par la Terre elle-même.</em></h1>
+  <p class="hero-sub">9 lettres. 9 paysages. 1 prénom. Capturés depuis l'espace par le satellite Landsat.</p>
+
+  <div class="cta-row">
+    <a href="galerie.html" class="btn primary"><i class="fa fa-images"></i> Voir la galerie</a>
+    <a href="videos.html" class="btn"><i class="fa fa-play"></i> Vidéos</a>
+    <a href="messages.html" class="btn"><i class="fa fa-heart"></i> Messages</a>
+  </div>
+</section>
+
+<!-- SECTIONS PREVIEW -->
+<section class="preview-grid">
+  <a href="galerie.html" class="preview-card">
+    <div class="preview-icon"><i class="fa fa-images"></i></div>
+    <div class="preview-label">Galerie</div>
+    <div class="preview-groups">Rochefort · Poitiers · Famille · Landsat</div>
+    <div class="preview-arrow"><i class="fa fa-arrow-right"></i></div>
+  </a>
+  <a href="videos.html" class="preview-card">
+    <div class="preview-icon"><i class="fa fa-film"></i></div>
+    <div class="preview-label">Vidéos</div>
+    <div class="preview-groups">Moments partagés · Souvenirs</div>
+    <div class="preview-arrow"><i class="fa fa-arrow-right"></i></div>
+  </a>
+  <a href="messages.html" class="preview-card">
+    <div class="preview-icon"><i class="fa fa-envelope-open-text"></i></div>
+    <div class="preview-label">Messages</div>
+    <div class="preview-groups">Signés par ceux qui t'aiment</div>
+    <div class="preview-arrow"><i class="fa fa-arrow-right"></i></div>
+  </a>
+</section>
+
+<!-- MSG SNEAK PEEK -->
+<section class="msg-peek-section">
+  <div class="section-label">Derniers messages ↓</div>
+  <div class="msg-peek-grid" id="msg-peek"></div>
+  <a href="messages.html" class="btn" style="margin-top:1.5rem">Voir tous les messages</a>
+</section>
+
+<!-- TICKER BOTTOM -->
+<div class="ticker-wrap bot-ticker">
+  <div class="ticker-track reverse">
+    <span>48°N 2°E • Paris</span><span class="sep">◦</span>
+    <span>Landsat 8 OLI</span><span class="sep">◦</span>
+    <span>Résolution 30m</span><span class="sep">◦</span>
+    <span>Band 4-3-2 RGB</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Pour Valentine avec amour</span><span class="sep">◦</span>
+    <span>9 lettres • 9 paysages</span><span class="sep">◦</span>
+    <span>Landsat 8 OLI</span><span class="sep">◦</span>
+    <span>Résolution 30m</span><span class="sep">◦</span>
+    <span>Band 4-3-2 RGB</span><span class="sep">◦</span>
+    <span>48°N 2°E • Paris</span><span class="sep">◦</span>
+    <span class="heart-red">♥</span>
+    <span>Pour Valentine avec amour</span><span class="sep">◦</span>
+    <span>9 lettres • 9 paysages</span><span class="sep">◦</span>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-name">V A L E N T I N E</div>
+  <div class="footer-sub">Un cadeau fait avec ❤ et quelques satellites</div>
+  <div class="footer-credit">Images © USGS / NASA Landsat</div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  renderMsgPeek('msg-peek', 3);
+</script>
+</body>
+</html>
