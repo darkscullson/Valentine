@@ -119,11 +119,38 @@ async function saveImage(file, title, group) {
 }
 
 // ---- VIDEOS ----
-function getVideos() {
-  return [];
+async function getVideos() {
+  const { data, error } = await sb
+    .from('videos')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data.map(v => ({
+    id: v.id,
+    title: v.title,
+    group: v.group_name,
+    url: v.url,
+    type: 'youtube',
+    date: new Date(v.created_at).toLocaleDateString('fr-FR')
+  }));
 }
 
-function saveVideo() {}
+async function saveVideo(vid) {
+  const { error } = await sb
+    .from('videos')
+    .insert({
+      title: vid.title,
+      group_name: vid.group,
+      url: vid.url
+    });
+
+  if (error) console.error(error);
+}
 
 // ---- UTILS ----
 function initials(name) {

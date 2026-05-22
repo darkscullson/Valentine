@@ -123,9 +123,9 @@
 <script>
   let vidFilter = 'all';
 
-  function buildFilters() {
+  async function buildFilters() {
     const container = document.getElementById('group-filters');
-    const vids = getVideos();
+    const vids = await getVideos();
     const usedGroups = [...new Set(vids.map(v => v.group))];
     const toShow = GROUPS.filter(g => usedGroups.includes(g.id));
     container.innerHTML = toShow.map(g => `
@@ -142,12 +142,12 @@
     vidFilter = gid;
     document.querySelectorAll('.filter-bar .btn').forEach(b => b.classList.remove('active-filter'));
     btn.classList.add('active-filter');
-    renderVideos();
+    await renderVideos();
   }
 
-  function renderVideos() {
+  async function renderVideos() {
     const root = document.getElementById('videos-root');
-    let vids = getVideos();
+    let vids = await getVideos();
     if (vidFilter !== 'all') vids = vids.filter(v => v.group === vidFilter);
 
     if (vids.length === 0) {
@@ -197,21 +197,23 @@
     document.getElementById('add-form').classList.toggle('open');
   }
 
-  function addVideo() {
+  async function addVideo() {
     const title = document.getElementById('v-title').value.trim();
     const group = document.getElementById('v-group').value;
     const url = document.getElementById('v-url').value.trim();
     if (!title) { document.getElementById('v-title').focus(); return; }
-    saveVideo({ title, group, url, type: url ? 'youtube' : 'upload' });
+    await saveVideo({ title, group, url, type: url ? 'youtube' : 'upload' });
     document.getElementById('v-title').value = '';
     document.getElementById('v-url').value = '';
     toggleAddForm();
-    buildFilters();
-    renderVideos();
+    await buildFilters();
+    await renderVideos();
   }
 
-  buildFilters();
-  renderVideos();
+  (async () => {
+    await buildFilters();
+    await renderVideos();
+  })();
 </script>
 </body>
 </html>
